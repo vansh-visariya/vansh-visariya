@@ -1,7 +1,7 @@
 ## Hi there 👋
 
 # 💫 About Me:
-🔭 I’m currently working on chatbot(clone on chatgpt which you can run locally)<br>🌱 I’m currently learning LLM and current evolution in field of AI<br>🤝I work mostly solo, but if you want to collaborate I am up for it<br>⚡ Fun fact, I am gamer (like story games)
+🔭 I’m currently working on End to End Network Security model <br>🌱 I’m currently learning LLM and current evolution in field of AI<br>🤝I work mostly solo, but if you want to collaborate I am up for it<br>⚡ Fun fact, I am gamer (like story games)
 
 
 ## 🌐 Socials:
