@@ -3,446 +3,628 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>vansh@terminal ~ $</title>
+    <title>vansh@terminal</title>
+    <meta name="description" content="Interactive terminal portfolio of Vansh Visariya - AI/ML Developer">
+    <meta property="og:title" content="Vansh Visariya | Terminal Portfolio">
+    <meta property="og:description" content="Explore my portfolio through an interactive terminal">
+    <meta property="og:image" content="https://github.com/vansh-visariya.png">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💻</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-tertiary: #21262d;
+            --text-primary: #f0f6fc;
+            --text-secondary: #c9d1d9;
+            --text-muted: #8b949e;
+            --accent-green: #7ee787;
+            --accent-blue: #58a6ff;
+            --accent-red: #ff7b72;
+            --accent-yellow: #d29922;
+            --accent-purple: #a371f7;
+            --accent-cyan: #79c0ff;
         }
 
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
-            background: #0d1117;
+            background: var(--bg-primary);
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            font-family: 'Fira Code', 'Cascadia Code', 'JetBrains Mono', 'Consolas', monospace;
+            font-family: 'JetBrains Mono', monospace;
             padding: 20px;
         }
 
         .terminal {
-            background: #161b22;
-            border-radius: 10px;
+            background: var(--bg-secondary);
+            border-radius: 12px;
             width: 100%;
-            max-width: 800px;
-            min-height: 500px;
-            box-shadow: 0 0 50px rgba(0, 255, 0, 0.1);
+            max-width: 900px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255,255,255,0.05);
             overflow: hidden;
         }
 
         .terminal-header {
-            background: #21262d;
+            background: var(--bg-tertiary);
             padding: 12px 16px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
         }
 
-        .terminal-btn {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
+        .terminal-buttons { display: flex; gap: 8px; }
+        .terminal-buttons span {
+            width: 12px; height: 12px; border-radius: 50%;
+            cursor: pointer; transition: opacity 0.2s;
         }
-
-        .btn-red { background: #ff5f56; }
-        .btn-yellow { background: #ffbd2e; }
-        .btn-green { background: #27c93f; }
+        .terminal-buttons span:hover { opacity: 0.8; }
+        .btn-close { background: #ff5f57; }
+        .btn-minimize { background: #febc2e; }
+        .btn-maximize { background: #28c840; }
 
         .terminal-title {
-            color: #8b949e;
+            flex: 1;
+            text-align: center;
+            color: var(--text-muted);
             font-size: 13px;
-            margin-left: 10px;
         }
 
         .terminal-body {
             padding: 20px;
-            height: 450px;
+            height: 500px;
             overflow-y: auto;
-            color: #c9d1d9;
+            color: var(--text-secondary);
             font-size: 14px;
-            line-height: 1.6;
+            line-height: 1.7;
         }
 
-        .terminal-body::-webkit-scrollbar {
-            width: 8px;
-        }
+        .terminal-body::-webkit-scrollbar { width: 8px; }
+        .terminal-body::-webkit-scrollbar-track { background: var(--bg-tertiary); }
+        .terminal-body::-webkit-scrollbar-thumb { background: #444; border-radius: 4px; }
 
-        .terminal-body::-webkit-scrollbar-track {
-            background: #21262d;
-        }
+        .line { margin-bottom: 4px; white-space: pre-wrap; word-wrap: break-word; }
 
-        .terminal-body::-webkit-scrollbar-thumb {
-            background: #30363d;
-            border-radius: 4px;
-        }
+        .prompt { color: var(--accent-green); }
+        .prompt-user { color: var(--accent-green); font-weight: 500; }
+        .prompt-at { color: var(--text-muted); }
+        .prompt-host { color: var(--accent-cyan); }
+        .prompt-path { color: var(--accent-purple); }
+        .prompt-symbol { color: var(--text-muted); }
 
-        .output-line {
-            margin-bottom: 5px;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-        }
-
-        .prompt {
-            color: #58a6ff;
-        }
-
-        .prompt-user {
-            color: #7ee787;
-        }
-
-        .prompt-at {
-            color: #8b949e;
-        }
-
-        .prompt-host {
-            color: #ff7b72;
-        }
-
-        .prompt-path {
-            color: #a5d6ff;
-        }
-
-        .command {
-            color: #f0f6fc;
-        }
-
-        .input-line {
+        .input-row {
             display: flex;
             align-items: center;
+            margin-top: 4px;
         }
 
-        #command-input {
+        #input {
             background: transparent;
             border: none;
-            color: #f0f6fc;
+            color: var(--text-primary);
             font-family: inherit;
             font-size: inherit;
             outline: none;
             flex: 1;
-            caret-color: #7ee787;
+            caret-color: var(--accent-green);
         }
 
-        .success { color: #7ee787; }
-        .error { color: #ff7b72; }
-        .info { color: #58a6ff; }
-        .warning { color: #d29922; }
-        .highlight { color: #a371f7; }
-        .cyan { color: #79c0ff; }
-        .dim { color: #8b949e; }
+        .success { color: var(--accent-green); }
+        .error { color: var(--accent-red); }
+        .info { color: var(--accent-blue); }
+        .warning { color: var(--accent-yellow); }
+        .purple { color: var(--accent-purple); }
+        .cyan { color: var(--accent-cyan); }
+        .muted { color: var(--text-muted); }
+        .bold { font-weight: 700; }
 
-        .ascii-art {
-            color: #7ee787;
+        a { color: var(--accent-blue); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        .terminal-footer {
+            background: var(--bg-tertiary);
+            padding: 8px 16px;
+            display: flex;
+            justify-content: space-between;
             font-size: 11px;
-            line-height: 1.2;
+            color: var(--text-muted);
+            border-top: 1px solid rgba(255,255,255,0.05);
         }
 
-        a {
-            color: #58a6ff;
-            text-decoration: none;
+        .loading { display: inline-block; }
+        .loading::after {
+            content: '';
+            animation: dots 1.5s infinite;
+        }
+        @keyframes dots {
+            0%, 20% { content: '.'; }
+            40% { content: '..'; }
+            60%, 100% { content: '...'; }
         }
 
-        a:hover {
-            text-decoration: underline;
+        .repo-card {
+            background: var(--bg-tertiary);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 6px;
+            padding: 12px;
+            margin: 8px 0;
         }
+        .repo-name { color: var(--accent-blue); font-weight: 500; }
+        .repo-desc { color: var(--text-muted); font-size: 12px; margin-top: 4px; }
+        .repo-stats { display: flex; gap: 16px; margin-top: 8px; font-size: 12px; }
+        .repo-stat { color: var(--text-muted); }
+        .repo-stat span { color: var(--text-secondary); }
 
-        .skill-bar {
-            display: inline-block;
-            background: #21262d;
-            border-radius: 3px;
+        .progress-bar {
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+            height: 8px;
             overflow: hidden;
-            width: 100px;
-            height: 10px;
-            margin-left: 10px;
-            vertical-align: middle;
+            margin: 4px 0;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-green), var(--accent-cyan));
+            border-radius: 4px;
+            transition: width 0.5s ease;
         }
 
-        .skill-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #7ee787, #58a6ff);
-        }
+        .ascii { font-size: 10px; line-height: 1.1; color: var(--accent-green); }
 
         @media (max-width: 600px) {
-            .terminal-body {
-                font-size: 12px;
-                padding: 15px;
-            }
-            .ascii-art {
-                font-size: 8px;
-            }
+            .terminal-body { font-size: 12px; padding: 15px; height: 400px; }
+            .ascii { font-size: 6px; }
         }
     </style>
 </head>
 <body>
     <div class="terminal">
         <div class="terminal-header">
-            <div class="terminal-btn btn-red"></div>
-            <div class="terminal-btn btn-yellow"></div>
-            <div class="terminal-btn btn-green"></div>
-            <span class="terminal-title">vansh@github: ~/profile</span>
-        </div>
-        <div class="terminal-body" id="terminal-body">
-            <div id="output"></div>
-            <div class="input-line">
-                <span class="prompt">
-                    <span class="prompt-user">vansh</span><span class="prompt-at">@</span><span class="prompt-host">github</span>:<span class="prompt-path">~</span>$ 
-                </span>
-                <input type="text" id="command-input" autofocus autocomplete="off" spellcheck="false">
+            <div class="terminal-buttons">
+                <span class="btn-close"></span>
+                <span class="btn-minimize"></span>
+                <span class="btn-maximize"></span>
             </div>
+            <div class="terminal-title">vansh@github — zsh</div>
+        </div>
+        <div class="terminal-body" id="terminal">
+            <div id="output"></div>
+            <div class="input-row">
+                <span class="prompt">
+                    <span class="prompt-user">visitor</span><span class="prompt-at">@</span><span class="prompt-host">vansh.dev</span><span class="prompt-symbol">:</span><span class="prompt-path">~</span><span class="prompt-symbol">$</span>&nbsp;
+                </span>
+                <input type="text" id="input" autofocus autocomplete="off" spellcheck="false" aria-label="Terminal input">
+            </div>
+        </div>
+        <div class="terminal-footer">
+            <span id="status">● Connected</span>
+            <span>Tab: autocomplete • ↑↓: history • 'help' for commands</span>
         </div>
     </div>
 
     <script>
-        const output = document.getElementById('output');
-        const input = document.getElementById('command-input');
-        const terminalBody = document.getElementById('terminal-body');
+    // ============================================
+    // VANSH VISARIYA - INTERACTIVE TERMINAL
+    // Real engineering, not a toy.
+    // ============================================
 
-        const ASCII_ART = `
-<span class="ascii-art"> __      __               _       __      ___                _             
- \\ \\    / /_ _ _ _  _____| |_     \\ \\    / (_)___ __ _ _ _(_)_  _ __ _ 
-  \\ \\/\\/ / _\` | ' \\(_-< ' \\       \\ \\/\\/ /| (_-< _\` | '_| | || / _\` |
-   \\_/\\_/\\__,_|_||_/__/_||_|       \\_/\\_/ |_/__\\__,_|_| |_|\\_, \\__,_|
-                                                          |__/       </span>
-`;
+    const GITHUB_USER = 'vansh-visariya';
+    const GITHUB_API = 'https://api.github.com';
 
-        const WELCOME_MSG = `
-${ASCII_ART}
-<span class="success">Welcome to my interactive terminal portfolio!</span>
-<span class="dim">Type '<span class="info">help</span>' to see available commands.</span>
-`;
+    // Cache for API responses
+    const cache = {
+        repos: null,
+        user: null,
+        lastFetch: 0
+    };
 
-        const commands = {
-            help: () => `
-<span class="info">Available commands:</span>
+    // DOM Elements
+    const $ = (sel) => document.querySelector(sel);
+    const output = $('#output');
+    const input = $('#input');
+    const terminal = $('#terminal');
+    const status = $('#status');
 
-  <span class="success">whoami</span>      - Learn about me
-  <span class="success">skills</span>      - View my tech stack
-  <span class="success">projects</span>    - Check out my projects
-  <span class="success">social</span>      - Find me on social media
-  <span class="success">contact</span>     - Get my contact info
-  <span class="success">education</span>   - My educational background
-  <span class="success">clear</span>       - Clear the terminal
-  <span class="success">neofetch</span>    - System info (just for fun)
-  <span class="success">sudo rm -rf</span> - Don't even try 😈
-`,
-            whoami: () => `
-<span class="highlight">╭─────────────────────────────────────╮</span>
-<span class="highlight">│</span>          <span class="success">Vansh Visariya</span>             <span class="highlight">│</span>
-<span class="highlight">╰─────────────────────────────────────╯</span>
+    // Command history
+    const history = { commands: [], index: -1 };
 
-<span class="cyan">🔭 Currently working on:</span> MindMesh
-<span class="cyan">🌱 Learning:</span> LLMs & AI Evolution
-<span class="cyan">💡 Interests:</span> AI/ML, Deep Learning, Computer Vision
-<span class="cyan">🤝 Collaboration:</span> Open to cool projects
-<span class="cyan">⚡ Fun fact:</span> I'm a gamer! 🎮
-`,
-            skills: () => `
-<span class="info">╭── Languages ──────────────────────────╮</span>
-│  <span class="success">Python</span>     <span class="skill-bar"><span class="skill-fill" style="width: 90%"></span></span>  Expert
-│  <span class="success">C++</span>        <span class="skill-bar"><span class="skill-fill" style="width: 75%"></span></span>  Advanced
-<span class="info">╰───────────────────────────────────────╯</span>
+    // ============================================
+    // CORE: Output & Rendering
+    // ============================================
+    function print(html, className = 'line') {
+        const div = document.createElement('div');
+        div.className = className;
+        div.innerHTML = html;
+        output.appendChild(div);
+        terminal.scrollTop = terminal.scrollHeight;
+    }
 
-<span class="info">╭── ML/AI Stack ────────────────────────╮</span>
-│  <span class="warning">PyTorch</span>       <span class="warning">TensorFlow</span>    <span class="warning">Keras</span>
-│  <span class="warning">scikit-learn</span>  <span class="warning">OpenCV</span>        <span class="warning">CUDA</span>
-│  <span class="warning">NumPy</span>         <span class="warning">Pandas</span>        <span class="warning">Matplotlib</span>
-│  <span class="warning">SciPy</span>         <span class="warning">MLflow</span>
-<span class="info">╰───────────────────────────────────────╯</span>
+    function printPrompt(cmd) {
+        print(`<span class="prompt"><span class="prompt-user">visitor</span><span class="prompt-at">@</span><span class="prompt-host">vansh.dev</span><span class="prompt-symbol">:</span><span class="prompt-path">~</span><span class="prompt-symbol">$</span></span> ${escapeHtml(cmd)}`);
+    }
 
-<span class="info">╭── Frameworks & Tools ─────────────────╮</span>
-│  <span class="cyan">FastAPI</span>    <span class="cyan">Flask</span>    <span class="cyan">Streamlit</span>
-│  <span class="cyan">Anaconda</span>   <span class="cyan">MySQL</span>    <span class="cyan">Vercel</span>
-<span class="info">╰───────────────────────────────────────╯</span>
-`,
-            projects: () => `
-<span class="info">╭── Featured Projects ──────────────────╮</span>
+    function escapeHtml(str) {
+        return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
 
-<span class="success">🧠 MindMesh</span> <span class="dim">[In Progress]</span>
-   AI-powered project I'm currently building
-   <span class="dim">→ More details coming soon...</span>
+    function setStatus(text, type = 'normal') {
+        const colors = { normal: '#7ee787', loading: '#d29922', error: '#ff7b72' };
+        status.innerHTML = `<span style="color:${colors[type]}">●</span> ${text}`;
+    }
 
-<span class="dim">Run '</span><span class="info">github</span><span class="dim">' to visit my GitHub for all projects</span>
-<span class="info">╰───────────────────────────────────────╯</span>
-`,
-            social: () => `
-<span class="info">╭── Find me online ─────────────────────╮</span>
-
-  <span class="success">GitHub</span>    → <a href="https://github.com/vansh-visariya" target="_blank">github.com/vansh-visariya</a>
-  <span class="success">LinkedIn</span>  → <a href="https://linkedin.com/in/vansh-visariya-b48898300" target="_blank">linkedin.com/in/vansh-visariya</a>
-  <span class="success">X/Twitter</span> → <a href="https://x.com/@vansh_visariya" target="_blank">x.com/@vansh_visariya</a>
-  <span class="success">Reddit</span>    → <a href="https://reddit.com/user/Unfair_Association89" target="_blank">u/Unfair_Association89</a>
-
-<span class="info">╰───────────────────────────────────────╯</span>
-`,
-            contact: () => `
-<span class="info">╭── Contact Me ─────────────────────────╮</span>
-
-  <span class="success">📧 Email:</span> <a href="mailto:vanshvisariya1985@gmail.com">vanshvisariya1985@gmail.com</a>
-
-  <span class="dim">Feel free to reach out for collaborations,
-  project discussions, or just to say hi!</span>
-
-<span class="info">╰───────────────────────────────────────╯</span>
-`,
-            education: () => `
-<span class="info">╭── Education ──────────────────────────╮</span>
-
-  <span class="success">🎓 Currently studying</span>
-     Focused on AI/ML and Computer Science
-
-  <span class="dim">Always learning, always growing!</span>
-
-<span class="info">╰───────────────────────────────────────╯</span>
-`,
-            github: () => {
-                window.open('https://github.com/vansh-visariya', '_blank');
-                return '<span class="success">Opening GitHub profile...</span>';
-            },
-            clear: () => {
-                output.innerHTML = '';
-                return null;
-            },
-            neofetch: () => `
-<span class="ascii-art">       _,met\$\$\$\$\$gg.          </span><span class="success">vansh</span>@<span class="success">github</span>
-<span class="ascii-art">    ,g\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$P.       </span>──────────────
-<span class="ascii-art">  ,g\$\$P"     """Y\$\$."._       </span><span class="info">OS:</span> Developer Edition
-<span class="ascii-art"> ,\$\$P'              \`\$\$\$.      </span><span class="info">Host:</span> Internet
-<span class="ascii-art">',\$\$P       ,ggs.     \`\$\$b:   </span><span class="info">Kernel:</span> Curiosity-driven
-<span class="ascii-art">\`d\$\$'     ,\$P"'   .    \$\$\$    </span><span class="info">Uptime:</span> Since birth
-<span class="ascii-art"> \$\$P      d\$'     ,    \$\$P    </span><span class="info">Shell:</span> zsh/bash
-<span class="ascii-art"> \$\$:      \$\$.   -    ,d\$\$'    </span><span class="info">IDE:</span> VS Code
-<span class="ascii-art"> \$\$;      Y\$b._   _,d\$P'     </span><span class="info">Languages:</span> Python, C++
-<span class="ascii-art"> Y\$\$.    \`.\`"Y\$\$\$\$P"'        </span><span class="info">Focus:</span> AI/ML
-<span class="ascii-art"> \`\$\$b      "-.__              </span><span class="info">Status:</span> <span class="success">Building cool stuff</span>
-<span class="ascii-art">  \`Y\$\$                        </span>
-<span class="ascii-art">   \`Y\$\$.                      </span><span class="dim">🎮 Gaming Mode: ON</span>
-<span class="ascii-art">     \`\$\$b.                    </span>
-<span class="ascii-art">       \`Y\$\$b.                 </span>
-<span class="ascii-art">          \`"Y\$b._             </span>
-<span class="ascii-art">              \`"""            </span>
-`,
-            'sudo rm -rf': () => `<span class="error">Nice try! 😏 But this terminal is protected.</span>`,
-            'sudo': () => `<span class="error">Permission denied. You're not root here!</span>`,
-            'ls': () => `<span class="cyan">about.txt</span>  <span class="cyan">skills/</span>  <span class="cyan">projects/</span>  <span class="cyan">contact.txt</span>  <span class="success">README.md</span>`,
-            'pwd': () => `/home/vansh/profile`,
-            'date': () => new Date().toString(),
-            'echo': (args) => args.join(' ') || '',
-            'cat': () => `<span class="dim">Try 'whoami', 'skills', or 'projects' instead!</span>`,
-            'cd': () => `<span class="dim">You're already where you need to be! 🏠</span>`,
-            'exit': () => `<span class="warning">You can't escape this easily! Try 'social' to find me elsewhere.</span>`,
-            'hello': () => `<span class="success">Hey there! 👋 Nice to meet you!</span>`,
-            'hi': () => `<span class="success">Hello! Welcome to my terminal! Type 'help' to explore.</span>`,
-        };
-
-        // Command aliases
-        commands.about = commands.whoami;
-        commands.info = commands.whoami;
-        commands.tech = commands.skills;
-        commands.stack = commands.skills;
-        commands.work = commands.projects;
-        commands.links = commands.social;
-        commands.email = commands.contact;
-        commands.mail = commands.contact;
-        commands.cls = commands.clear;
-        commands.man = commands.help;
-        commands['--help'] = commands.help;
-        commands['-h'] = commands.help;
-        commands['?'] = commands.help;
-
-        function printOutput(html) {
-            if (html === null) return;
-            const div = document.createElement('div');
-            div.className = 'output-line';
-            div.innerHTML = html;
-            output.appendChild(div);
+    // ============================================
+    // GITHUB API INTEGRATION
+    // ============================================
+    async function fetchGitHub(endpoint) {
+        try {
+            setStatus('Fetching from GitHub...', 'loading');
+            const res = await fetch(`${GITHUB_API}${endpoint}`);
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            const data = await res.json();
+            setStatus('Connected', 'normal');
+            return data;
+        } catch (err) {
+            setStatus('API Error', 'error');
+            throw err;
         }
+    }
 
-        function printCommand(cmd) {
-            const div = document.createElement('div');
-            div.className = 'output-line';
-            div.innerHTML = `<span class="prompt"><span class="prompt-user">vansh</span><span class="prompt-at">@</span><span class="prompt-host">github</span>:<span class="prompt-path">~</span>$ </span><span class="command">${cmd}</span>`;
-            output.appendChild(div);
+    async function getRepos() {
+        if (cache.repos && Date.now() - cache.lastFetch < 300000) return cache.repos;
+        cache.repos = await fetchGitHub(`/users/${GITHUB_USER}/repos?sort=updated&per_page=10`);
+        cache.lastFetch = Date.now();
+        return cache.repos;
+    }
+
+    async function getUser() {
+        if (cache.user) return cache.user;
+        cache.user = await fetchGitHub(`/users/${GITHUB_USER}`);
+        return cache.user;
+    }
+
+    // ============================================
+    // COMMANDS
+    // ============================================
+    const commands = {
+        help: {
+            desc: 'Show available commands',
+            run: () => `
+<span class="bold info">Available Commands:</span>
+
+  <span class="success">about</span>       Who am I
+  <span class="success">skills</span>      Tech stack & expertise
+  <span class="success">projects</span>    My projects (fetches from GitHub)
+  <span class="success">repos</span>       Live GitHub repositories
+  <span class="success">stats</span>       GitHub statistics
+  <span class="success">social</span>      Social media links
+  <span class="success">contact</span>     How to reach me
+  <span class="success">open</span> <span class="muted">&lt;repo&gt;</span>  Open a repository
+  <span class="success">clear</span>       Clear terminal
+  <span class="success">neofetch</span>    System info
+
+<span class="muted">Pro tip: Use Tab for autocomplete, ↑↓ for history</span>`
+        },
+
+        about: {
+            desc: 'About me',
+            run: () => `
+<span class="bold purple">┌─────────────────────────────────────────┐</span>
+<span class="bold purple">│</span>          <span class="bold">Vansh Visariya</span>                 <span class="bold purple">│</span>
+<span class="bold purple">│</span>          <span class="muted">AI/ML Developer</span>                 <span class="bold purple">│</span>
+<span class="bold purple">└─────────────────────────────────────────┘</span>
+
+<span class="cyan">▸ Currently building:</span> MindMesh
+<span class="cyan">▸ Learning:</span> LLMs, Transformers, AI Evolution
+<span class="cyan">▸ Focus:</span> Deep Learning, Computer Vision, NLP
+<span class="cyan">▸ Approach:</span> Ship fast, iterate faster
+<span class="cyan">▸ Fun fact:</span> Gamer 🎮 (it's in the pfp)
+
+<span class="muted">Type 'skills' to see my tech stack</span>`
+        },
+
+        skills: {
+            desc: 'Technical skills',
+            run: () => `
+<span class="bold info">━━━ Languages ━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+  <span class="success">Python</span>      ████████████████████░  95%
+  <span class="success">C++</span>         ███████████████░░░░░  75%
+
+<span class="bold info">━━━ ML/AI Stack ━━━━━━━━━━━━━━━━━━━━━━━━</span>
+  <span class="warning">PyTorch</span> • <span class="warning">TensorFlow</span> • <span class="warning">Keras</span>
+  <span class="warning">scikit-learn</span> • <span class="warning">OpenCV</span> • <span class="warning">CUDA</span>
+  <span class="warning">NumPy</span> • <span class="warning">Pandas</span> • <span class="warning">Matplotlib</span>
+
+<span class="bold info">━━━ Backend & Tools ━━━━━━━━━━━━━━━━━━━━</span>
+  <span class="cyan">FastAPI</span> • <span class="cyan">Flask</span> • <span class="cyan">Streamlit</span>
+  <span class="cyan">MySQL</span> • <span class="cyan">Git</span> • <span class="cyan">Docker</span>
+
+<span class="bold info">━━━ Currently Exploring ━━━━━━━━━━━━━━━━</span>
+  <span class="purple">LangChain</span> • <span class="purple">Transformers</span> • <span class="purple">RAG</span>`
+        },
+
+        repos: {
+            desc: 'Fetch live GitHub repos',
+            run: async () => {
+                print('<span class="loading muted">Fetching repositories</span>');
+                try {
+                    const repos = await getRepos();
+                    output.lastChild.remove(); // Remove loading message
+                    
+                    if (!repos.length) return '<span class="muted">No public repositories found.</span>';
+                    
+                    let html = `<span class="bold info">━━━ Recent Repositories ━━━━━━━━━━━━━━━━</span>\n`;
+                    repos.slice(0, 6).forEach(repo => {
+                        const stars = repo.stargazers_count;
+                        const forks = repo.forks_count;
+                        const lang = repo.language || 'Unknown';
+                        html += `
+<div class="repo-card">
+  <a href="${repo.html_url}" target="_blank" class="repo-name">${repo.name}</a>
+  <div class="repo-desc">${repo.description || 'No description'}</div>
+  <div class="repo-stats">
+    <span class="repo-stat">⭐ <span>${stars}</span></span>
+    <span class="repo-stat">🍴 <span>${forks}</span></span>
+    <span class="repo-stat">📝 <span>${lang}</span></span>
+  </div>
+</div>`;
+                    });
+                    html += `\n<span class="muted">Type 'open &lt;repo-name&gt;' to visit a repository</span>`;
+                    return html;
+                } catch (e) {
+                    return `<span class="error">Failed to fetch repos: ${e.message}</span>`;
+                }
+            }
+        },
+
+        stats: {
+            desc: 'GitHub statistics',
+            run: async () => {
+                print('<span class="loading muted">Fetching GitHub stats</span>');
+                try {
+                    const [user, repos] = await Promise.all([getUser(), getRepos()]);
+                    output.lastChild.remove();
+                    
+                    const totalStars = repos.reduce((sum, r) => sum + r.stargazers_count, 0);
+                    const totalForks = repos.reduce((sum, r) => sum + r.forks_count, 0);
+                    const languages = [...new Set(repos.map(r => r.language).filter(Boolean))];
+                    
+                    return `
+<span class="bold info">━━━ GitHub Stats ━━━━━━━━━━━━━━━━━━━━━━━</span>
+
+  <span class="success">@${user.login}</span>
+  ${user.bio || ''}
+
+  <span class="cyan">Public Repos:</span>  ${user.public_repos}
+  <span class="cyan">Followers:</span>     ${user.followers}
+  <span class="cyan">Following:</span>     ${user.following}
+  <span class="cyan">Total Stars:</span>   ${totalStars} ⭐
+  <span class="cyan">Total Forks:</span>   ${totalForks} 🍴
+  
+  <span class="cyan">Languages:</span>     ${languages.slice(0, 5).join(', ')}
+  <span class="cyan">Member since:</span>  ${new Date(user.created_at).getFullYear()}
+
+<span class="muted">Profile: github.com/${GITHUB_USER}</span>`;
+                } catch (e) {
+                    return `<span class="error">Failed to fetch stats: ${e.message}</span>`;
+                }
+            }
+        },
+
+        projects: {
+            desc: 'Featured projects',
+            run: () => `
+<span class="bold info">━━━ Featured Projects ━━━━━━━━━━━━━━━━━━</span>
+
+<span class="bold success">🧠 MindMesh</span> <span class="warning">[In Development]</span>
+   AI-powered knowledge management system
+   <span class="muted">Stack: Python, LangChain, FastAPI</span>
+
+<span class="bold success">🔬 ML Experiments</span>
+   Deep learning research & experiments
+   <span class="muted">Stack: PyTorch, CUDA, Jupyter</span>
+
+<span class="muted">Run 'repos' for live GitHub data</span>
+<span class="muted">Run 'open &lt;name&gt;' to visit a project</span>`
+        },
+
+        social: {
+            desc: 'Social links',
+            run: () => `
+<span class="bold info">━━━ Connect With Me ━━━━━━━━━━━━━━━━━━━━</span>
+
+  <span class="success">GitHub</span>     <a href="https://github.com/vansh-visariya" target="_blank">github.com/vansh-visariya</a>
+  <span class="success">LinkedIn</span>   <a href="https://linkedin.com/in/vansh-visariya-b48898300" target="_blank">linkedin.com/in/vansh-visariya</a>
+  <span class="success">Twitter/X</span>  <a href="https://x.com/@vansh_visariya" target="_blank">x.com/@vansh_visariya</a>
+  <span class="success">Reddit</span>     <a href="https://reddit.com/user/Unfair_Association89" target="_blank">u/Unfair_Association89</a>
+
+<span class="muted">Click any link to open in new tab</span>`
+        },
+
+        contact: {
+            desc: 'Contact information',
+            run: () => `
+<span class="bold info">━━━ Get In Touch ━━━━━━━━━━━━━━━━━━━━━━━</span>
+
+  <span class="success">📧 Email:</span>  <a href="mailto:vanshvisariya1985@gmail.com">vanshvisariya1985@gmail.com</a>
+
+  Open to:
+  • Collaborations on AI/ML projects
+  • Open source contributions  
+  • Interesting technical discussions
+
+<span class="muted">Response time: Usually within 24h</span>`
+        },
+
+        open: {
+            desc: 'Open a repository',
+            run: async (args) => {
+                if (!args.length) return '<span class="error">Usage: open &lt;repo-name&gt;</span>';
+                const repoName = args.join('-').toLowerCase();
+                try {
+                    const repos = await getRepos();
+                    const repo = repos.find(r => r.name.toLowerCase().includes(repoName));
+                    if (repo) {
+                        window.open(repo.html_url, '_blank');
+                        return `<span class="success">Opening ${repo.name}...</span>`;
+                    }
+                    return `<span class="error">Repository '${repoName}' not found. Try 'repos' to see available.</span>`;
+                } catch (e) {
+                    return `<span class="error">Failed to search repos: ${e.message}</span>`;
+                }
+            }
+        },
+
+        clear: {
+            desc: 'Clear terminal',
+            run: () => { output.innerHTML = ''; return null; }
+        },
+
+        neofetch: {
+            desc: 'System info',
+            run: () => `
+<span class="ascii">        ___          </span>  <span class="bold success">visitor</span><span class="muted">@</span><span class="bold cyan">vansh.dev</span>
+<span class="ascii">       /\\  \\         </span>  <span class="muted">──────────────────</span>
+<span class="ascii">      /::\\  \\        </span>  <span class="cyan">OS:</span> Developer Edition
+<span class="ascii">     /:/\\:\\  \\       </span>  <span class="cyan">Host:</span> The Internet
+<span class="ascii">    /:/ /::\\  \\      </span>  <span class="cyan">Kernel:</span> Curiosity-driven
+<span class="ascii">   /:/_/:/\\:\\__\\     </span>  <span class="cyan">Shell:</span> vansh-terminal 2.0
+<span class="ascii">   \\:\\/:/  \\/__/     </span>  <span class="cyan">Terminal:</span> 900x500
+<span class="ascii">    \\::/__/          </span>  <span class="cyan">CPU:</span> Neural Networks
+<span class="ascii">     \\:\\  \\          </span>  <span class="cyan">GPU:</span> CUDA-powered
+<span class="ascii">      \\:\\__\\         </span>  <span class="cyan">Memory:</span> Lots of RAM
+<span class="ascii">       \\/__/         </span>  <span class="cyan">Uptime:</span> Since day one
+
+                        <span class="muted">🎮 Gaming Mode: Always ON</span>`
+        },
+
+        whoami: { desc: 'Alias for about', run: () => commands.about.run() },
+        ls: { desc: 'List files', run: () => '<span class="cyan">about.txt</span>  <span class="cyan">skills/</span>  <span class="cyan">projects/</span>  <span class="cyan">contact.txt</span>  <span class="success">README.md</span>' },
+        pwd: { desc: 'Print directory', run: () => '/home/visitor/vansh-portfolio' },
+        date: { desc: 'Current date', run: () => new Date().toString() },
+        echo: { desc: 'Echo text', run: (args) => args.join(' ') || '' },
+        sudo: { desc: 'Superuser', run: () => '<span class="error">Nice try! 😏 Permission denied.</span>' },
+        exit: { desc: 'Exit terminal', run: () => '<span class="warning">There is no escape! Check out my socials instead.</span>' },
+        github: { desc: 'Open GitHub', run: () => { window.open(`https://github.com/${GITHUB_USER}`, '_blank'); return '<span class="success">Opening GitHub...</span>'; }},
+        hi: { desc: 'Say hi', run: () => '<span class="success">Hey there! 👋 Welcome to my terminal.</span>' },
+        hello: { desc: 'Say hello', run: () => '<span class="success">Hello! Type "help" to explore.</span>' },
+    };
+
+    // Aliases
+    ['?', '--help', '-h', 'man'].forEach(a => commands[a] = commands.help);
+    commands.cls = commands.clear;
+    commands.info = commands.about;
+    commands.links = commands.social;
+    commands.email = commands.contact;
+    commands.tech = commands.skills;
+    commands.stack = commands.skills;
+
+    // ============================================
+    // COMMAND EXECUTION
+    // ============================================
+    async function execute(line) {
+        const trimmed = line.trim();
+        if (!trimmed) return;
+
+        printPrompt(trimmed);
+        
+        // Add to history
+        history.commands.push(trimmed);
+        history.index = -1;
+
+        const [cmd, ...args] = trimmed.split(/\s+/);
+        const cmdLower = cmd.toLowerCase();
+
+        if (commands[cmdLower]) {
+            const result = await commands[cmdLower].run(args);
+            if (result !== null) print(result);
+        } else {
+            print(`<span class="error">Command not found: ${escapeHtml(cmd)}</span>
+<span class="muted">Type 'help' to see available commands.</span>`);
         }
+    }
 
-        function executeCommand(cmdLine) {
-            const parts = cmdLine.trim().split(' ');
-            const cmd = parts[0].toLowerCase();
-            const args = parts.slice(1);
+    // ============================================
+    // AUTOCOMPLETE
+    // ============================================
+    function autocomplete(partial) {
+        const matches = Object.keys(commands).filter(c => 
+            c.startsWith(partial.toLowerCase()) && !c.startsWith('-') && c !== '?'
+        );
+        return matches;
+    }
 
-            printCommand(cmdLine);
-
-            if (cmd === '') {
-                // Empty command, just show new prompt
-            } else if (commands[cmd]) {
-                const result = typeof commands[cmd] === 'function' 
-                    ? commands[cmd](args) 
-                    : commands[cmd];
-                printOutput(result);
+    // ============================================
+    // EVENT HANDLERS
+    // ============================================
+    input.addEventListener('keydown', async (e) => {
+        if (e.key === 'Enter') {
+            const cmd = input.value;
+            input.value = '';
+            await execute(cmd);
+        }
+        else if (e.key === 'Tab') {
+            e.preventDefault();
+            const partial = input.value.split(/\s+/).pop();
+            const matches = autocomplete(partial);
+            if (matches.length === 1) {
+                const parts = input.value.split(/\s+/);
+                parts[parts.length - 1] = matches[0];
+                input.value = parts.join(' ');
+            } else if (matches.length > 1) {
+                printPrompt(input.value);
+                print(`<span class="muted">${matches.join('  ')}</span>`);
+            }
+        }
+        else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            if (history.index < history.commands.length - 1) {
+                history.index++;
+                input.value = history.commands[history.commands.length - 1 - history.index];
+            }
+        }
+        else if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            if (history.index > 0) {
+                history.index--;
+                input.value = history.commands[history.commands.length - 1 - history.index];
             } else {
-                printOutput(`<span class="error">Command not found: ${cmd}</span>\n<span class="dim">Type 'help' for available commands.</span>`);
-            }
-
-            terminalBody.scrollTop = terminalBody.scrollHeight;
-        }
-
-        // Initialize with welcome message
-        printOutput(WELCOME_MSG);
-
-        // Handle input
-        input.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                const cmd = input.value;
+                history.index = -1;
                 input.value = '';
-                executeCommand(cmd);
             }
-        });
+        }
+        else if (e.key === 'l' && e.ctrlKey) {
+            e.preventDefault();
+            commands.clear.run();
+        }
+    });
 
-        // Keep focus on input
-        document.addEventListener('click', () => input.focus());
-        terminalBody.addEventListener('click', () => input.focus());
+    // Keep focus
+    document.addEventListener('click', () => input.focus());
 
-        // Command history
-        let history = [];
-        let historyIndex = -1;
+    // ============================================
+    // INITIALIZATION
+    // ============================================
+    function init() {
+        const ascii = `<span class="ascii"> __   __                _       __   ___              _          
+ \\ \\ / /_ _ _ _  ___| |_     \\ \\ / (_)___ __ _ _ _(_)_  _ __ _ 
+  \\ V / _\` | ' \\(_-<| ' \\     \\ V /| (_-</ _\` | '_| | || / _\` |
+   \\_/\\__,_|_||_/__/|_||_|     \\_/ |_/__/\\__,_|_| |_|\\_, \\__,_|
+                                                      |__/      </span>`;
 
-        input.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowUp') {
-                e.preventDefault();
-                if (historyIndex < history.length - 1) {
-                    historyIndex++;
-                    input.value = history[history.length - 1 - historyIndex];
-                }
-            } else if (e.key === 'ArrowDown') {
-                e.preventDefault();
-                if (historyIndex > 0) {
-                    historyIndex--;
-                    input.value = history[history.length - 1 - historyIndex];
-                } else {
-                    historyIndex = -1;
-                    input.value = '';
-                }
-            } else if (e.key === 'Enter' && input.value.trim()) {
-                history.push(input.value.trim());
-                historyIndex = -1;
-            }
-        });
+        print(ascii);
+        print('');
+        print('<span class="success">Welcome to my interactive terminal portfolio.</span>');
+        print('<span class="muted">Type</span> <span class="info">help</span> <span class="muted">to see available commands.</span>');
+        print('<span class="muted">This terminal fetches real data from GitHub API.</span>');
+        print('');
+    }
 
-        // Tab completion
-        input.addEventListener('keydown', (e) => {
-            if (e.key === 'Tab') {
-                e.preventDefault();
-                const partial = input.value.toLowerCase();
-                const matches = Object.keys(commands).filter(cmd => cmd.startsWith(partial));
-                if (matches.length === 1) {
-                    input.value = matches[0];
-                } else if (matches.length > 1) {
-                    printCommand(input.value);
-                    printOutput(`<span class="dim">${matches.join('  ')}</span>`);
-                    terminalBody.scrollTop = terminalBody.scrollHeight;
-                }
-            }
-        });
+    init();
+    input.focus();
     </script>
 </body>
 </html>
