@@ -1,11 +1,94 @@
-## Hi there 👋
+```
+ __      __               _       __      ___                _             
+ \ \    / /_ _ _ _  _____| |_     \ \    / (_)___ __ _ _ _(_)_  _ __ _ 
+  \ \/\/ / _` | ' \(_-< ' \       \ \/\/ /| (_-< _` | '_| | || / _` |
+   \_/\_/\__,_|_||_/__/_||_|       \_/\_/ |_/__\__,_|_| |_|\_, \__,_|
+                                                          |__/       
+```
 
-# 💫 About Me:
-🔭 I’m currently working on MindMesh <br>🌱 I’m currently learning LLM and current evolution in field of AI<br>🤝I work mostly solo, but if you want to collaborate I am up for it<br>⚡ Fun fact, I am gamer (u can see that in my pfp)
+<p align="center">
+  <a href="https://vansh-visariya.github.io/vansh-visariya/">
+    <img src="./terminal.svg" alt="Interactive Terminal - Click to try it!" width="800"/>
+  </a>
+</p>
 
+<p align="center">
+  <i>👆 Click the terminal above to try the interactive version!</i>
+</p>
 
-## 🌐 Socials:
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-%230077B5.svg?logo=linkedin&logoColor=white)](https://linkedin.com/in/vansh-visariya-b48898300) [![Reddit](https://img.shields.io/badge/Reddit-%23FF4500.svg?logo=Reddit&logoColor=white)](https://reddit.com/user/Unfair_Association89) [![X](https://img.shields.io/badge/X-black.svg?logo=X&logoColor=white)](https://x.com/@vansh_visariya) [![email](https://img.shields.io/badge/Email-D14836?logo=gmail&logoColor=white)](mailto:vanshvisariya1985@gmail.com) 
+---
 
-# 💻 Tech Stack:
-![C++](https://img.shields.io/badge/c++-%2300599C.svg?style=for-the-badge&logo=c%2B%2B&logoColor=white) ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54) ![Vercel](https://img.shields.io/badge/vercel-%23000000.svg?style=for-the-badge&logo=vercel&logoColor=white) ![Anaconda](https://img.shields.io/badge/Anaconda-%2344A833.svg?style=for-the-badge&logo=anaconda&logoColor=white) ![Flask](https://img.shields.io/badge/flask-%23000.svg?style=for-the-badge&logo=flask&logoColor=white) ![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi) ![nVIDIA](https://img.shields.io/badge/cuda-000000.svg?style=for-the-badge&logo=nVIDIA&logoColor=green) ![OpenCV](https://img.shields.io/badge/opencv-%23white.svg?style=for-the-badge&logo=opencv&logoColor=white) ![Streamlit](https://img.shields.io/badge/Streamlit-%23FE4B4B.svg?style=for-the-badge&logo=streamlit&logoColor=white) ![MySQL](https://img.shields.io/badge/mysql-4479A1.svg?style=for-the-badge&logo=mysql&logoColor=white) ![Keras](https://img.shields.io/badge/Keras-%23D00000.svg?style=for-the-badge&logo=Keras&logoColor=white) ![Matplotlib](https://img.shields.io/badge/Matplotlib-%23ffffff.svg?style=for-the-badge&logo=Matplotlib&logoColor=black) ![mlflow](https://img.shields.io/badge/mlflow-%23d9ead3.svg?style=for-the-badge&logo=numpy&logoColor=blue) ![NumPy](https://img.shields.io/badge/numpy-%23013243.svg?style=for-the-badge&logo=numpy&logoColor=white) ![Pandas](https://img.shields.io/badge/pandas-%23150458.svg?style=for-the-badge&logo=pandas&logoColor=white) ![scikit-learn](https://img.shields.io/badge/scikit--learn-%23F7931E.svg?style=for-the-badge&logo=scikit-learn&logoColor=white) ![PyTorch](https://img.shields.io/badge/PyTorch-%23EE4C2C.svg?style=for-the-badge&logo=PyTorch&logoColor=white) ![Scipy](https://img.shields.io/badge/SciPy-%230C55A5.svg?style=for-the-badge&logo=scipy&logoColor=%white) ![TensorFlow](https://img.shields.io/badge/TensorFlow-%23FF6F00.svg?style=for-the-badge&logo=TensorFlow&logoColor=white)
+```bash
+┌──(vansh㉿github)─[~/profile]
+└─$ cat about.txt
+```
+
+```yaml
+name: Vansh Visariya
+located_in: Earth
+current_project: MindMesh
+learning: LLMs & AI Evolution
+collaboration: Open to cool projects
+fun_fact: Gamer (check the pfp 🎮)
+```
+
+```bash
+┌──(vansh㉿github)─[~/profile]
+└─$ ls -la skills/
+```
+
+```
+drwxr-xr-x  languages/
+    ├── python.py
+    └── cpp.cpp
+
+drwxr-xr-x  frameworks/
+    ├── flask
+    ├── fastapi
+    └── streamlit
+
+drwxr-xr-x  ml_stack/
+    ├── pytorch
+    ├── tensorflow
+    ├── keras
+    ├── scikit-learn
+    └── opencv
+
+drwxr-xr-x  tools/
+    ├── cuda
+    ├── numpy
+    ├── pandas
+    ├── matplotlib
+    ├── mlflow
+    └── anaconda
+
+drwxr-xr-x  infra/
+    ├── vercel
+    └── mysql
+```
+
+```bash
+┌──(vansh㉿github)─[~/profile]
+└─$ ./connect.sh
+```
+
+<p align="left">
+<a href="https://linkedin.com/in/vansh-visariya-b48898300"><img src="https://img.shields.io/badge/-LinkedIn-0A66C2?style=flat-square&logo=linkedin&logoColor=white"/></a>
+<a href="https://x.com/@vansh_visariya"><img src="https://img.shields.io/badge/-X-000000?style=flat-square&logo=x&logoColor=white"/></a>
+<a href="https://reddit.com/user/Unfair_Association89"><img src="https://img.shields.io/badge/-Reddit-FF4500?style=flat-square&logo=reddit&logoColor=white"/></a>
+<a href="mailto:vanshvisariya1985@gmail.com"><img src="https://img.shields.io/badge/-Email-D14836?style=flat-square&logo=gmail&logoColor=white"/></a>
+</p>
+
+```bash
+┌──(vansh㉿github)─[~/profile]
+└─$ echo "Thanks for visiting! Let's build something awesome together."
+Thanks for visiting! Let's build something awesome together.
+```
+
+<img src="https://komarev.com/ghpvc/?username=vansh-visariya&style=flat-square&color=00ff00" alt=""/>
+
+---
+<p align="center">
+<img src="https://github-readme-stats.vercel.app/api?username=vansh-visariya&show_icons=true&theme=chartreuse-dark&hide_border=true&bg_color=0d1117" width="48%"/>
+<img src="https://github-readme-streak-stats.herokuapp.com/?user=vansh-visariya&theme=chartreuse-dark&hide_border=true&background=0d1117" width="48%"/>
+</p>
